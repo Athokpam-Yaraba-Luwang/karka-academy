@@ -1,0 +1,598 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+{% extends "base.html" %}
+
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{% for f in d.FAQS %}{"@type": "Question", "name": {{ f.q|tojson }}, "acceptedAnswer": {"@type": "Answer", "text": {{ f.a|tojson }}}}{% if not loop.last %},{% endif %}{% endfor %}]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+{# ================================ HERO ================================ #}
+<section class="hero" id="top" data-anim-scope>
+  <div class="hero__bg" aria-hidden="true">
+    <div class="hero__grid"></div>
+    <div class="glow glow--a"></div>
+    <div class="glow glow--b"></div>
+    <div class="glow glow--c"></div>
+  </div>
+
+  <div class="wrap hero__in">
+    <div class="hero__copy">
+      <p class="pill pill--live anim-in" style="--d:.05s"><span class="dot"></span> Admissions open · Nagercoil &amp; online</p>
+
+      <h1 class="hero__title">
+        <span class="ln"><span style="--d:.12s">Your future,</span></span>
+        <span class="ln"><span style="--d:.2s">powered by</span></span>
+        <span class="ln"><span style="--d:.28s">
+          <span class="rotator" data-rotator aria-hidden="true"><span class="rotator__track">
+            <span>AI.</span><span>code.</span><span>design.</span><span>data.</span><span>AI.</span>
+          </span></span><span class="sr-only">AI.</span>
+        </span></span>
+      </h1>
+
+      <p class="hero__sub anim-in" style="--d:.5s">
+        Nagercoil's AI-first career academy. Learn next to real mentors, ship real client projects, and pay
+        <b>₹0 upfront</b>. Your fees start only after you're hired.
+      </p>
+
+      <div class="hero__ctas anim-in" style="--d:.62s">
+        <a class="btn btn--glow btn--lg" href="#apply" data-magnetic>Apply free {{ icon('arrow-right') }}</a>
+        <a class="btn btn--ghost-light btn--lg" href="#tracks" data-finder-open>{{ icon('compass') }} Find my track in 30s</a>
+      </div>
+
+      <div class="hero__proof anim-in" style="--d:.74s">
+        <div class="faces" aria-hidden="true">
+          {% for p in d.PLACED[:4] %}<span class="face face--{{ loop.index }}">{{ p.name[:1] }}</span>{% endfor %}
+          <span class="face face--more">+</span>
+        </div>
+        <div class="hero__proof-txt">
+          <span class="stars" aria-hidden="true">{% for _ in range(5) %}{{ icon('star') }}{% endfor %}</span>
+          <span><b>{{ site.rating }}</b> from {{ site.rating_count }}+ ratings · <b>{{ site.ig_followers }}</b> on Instagram</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__art" aria-hidden="true" data-parallax>
+      <div class="orbit">
+        <div class="ring ring--1">
+          {# start angles keep the speech bubble (~220deg) and sticker (~320deg) clear when the orbit is static (lite mode) #}
+          {% for t, a in [('React', 30), ('Python', 150), ('Gen AI', 330)] %}
+          <span class="orb" style="--a:{{ a }}deg"><span class="orb__chip">{{ t }}</span></span>
+          {% endfor %}
+        </div>
+        <div class="ring ring--2">
+          {% for t, a in [('Figma', 10), ('Node.js', 68), ('SQL', 122), ('Java', 168), ('Prompting', 262)] %}
+          <span class="orb" style="--a:{{ a }}deg"><span class="orb__chip">{{ t }}</span></span>
+          {% endfor %}
+        </div>
+        <div class="ring ring--3"></div>
+        <div class="orbit__halo"></div>
+        <div class="orbit__bot">{% with eager = true %}{% include "_mascot.html" %}{% endwith %}</div>
+        <div class="bubble">Let's get you hired! 🚀</div>
+        <div class="sticker"><b>₹0</b><span>upfront</span></div>
+        <p class="hand hero__note">pay only after<br>you're hired ↓</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__partners anim-in" style="--d:.9s">
+    <p class="hero__partners-label">{{ icon('sparkles') }} Where our learners are making an impact</p>
+    {# Two identical strips moving the same way; the second starts half a lap ahead so different companies line up. #}
+    {% for row in range(2) %}
+    <div class="marquee marquee--logos{% if row %} marquee--offset{% endif %}" style="--dur:44s"{% if row %} aria-hidden="true"{% endif %}>
+      <div class="marquee__track">
+        {% for _ in range(2) %}
+        {% set visible = row == 0 and loop.first %}
+        <ul class="logos"{% if not visible %} aria-hidden="true"{% endif %}>
+          {% for p in d.PARTNERS %}
+          {% if p.logo %}<li class="plogo"><img src="{{ asset('img/logos/' ~ p.logo ~ '.webp') }}" width="{{ p.w }}" height="28" alt="{{ p.name if visible else '' }}" decoding="async"></li>
+          {% else %}<li class="wm wm--{{ loop.index0 % 6 }}">{{ p.name }}</li>{% endif %}
+          {% endfor %}
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{# =============================== TICKER =============================== #}
+<div class="ticker" aria-hidden="true" data-anim-scope>
+  <div class="band band--a"><div class="band__track" style="--dur:30s">
+    {% for _ in range(2) %}<span class="band__set">{% for t in d.TICKER %}<span>{{ t }}</span><i>✦</i>{% endfor %}</span>{% endfor %}
+  </div></div>
+  <div class="band band--b"><div class="band__track band__track--rev" style="--dur:36s">
+    {% for _ in range(2) %}<span class="band__set">{% for t in site.ig_bio + ['GenAI', 'Fullstack', 'UI/UX', 'Data'] %}<span>{{ t }}</span><i>●</i>{% endfor %}</span>{% endfor %}
+  </div></div>
+</div>
+
+{# =============================== STATS ================================ #}
+<section class="sec stats" aria-label="Karka in numbers">
+  <div class="wrap">
+    <div class="stats__grid">
+      {% for s in d.STATS %}
+      <div class="stat stat--{{ loop.index }}" data-reveal style="--i:{{ loop.index0 }}">
+        <span class="stat__num">
+          {{ s.prefix }}<span data-count="{{ s.value }}" {% if loop.first %}data-from="100000"{% endif %}>{{ s.value }}</span>{{ s.suffix }}
+        </span>
+        <span class="stat__label">{{ s.label }}</span>
+        <span class="stat__note">{{ s.note }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ================================ GAP ================================= #}
+<section class="sec gap" aria-labelledby="gap-title">
+  <div class="wrap gap__in">
+    <div class="gap__head" data-reveal>
+      <p class="eyebrow">Why Karka exists</p>
+      <h2 class="h2" id="gap-title">College gives you a degree. <span class="grad-text">We close the gap.</span></h2>
+    </div>
+    <ul class="gap__list">
+      {% for a, b, c in d.MISSION.problem %}
+      <li data-reveal style="--i:{{ loop.index0 }}"><b>{{ a }}</b> <span class="strike">{{ b }}</span> {{ c }}</li>
+      {% endfor %}
+    </ul>
+    <p class="gap__promise" data-reveal style="--i:3">{{ d.MISSION.promise }}</p>
+  </div>
+</section>
+
+{# ======================= PAY AFTER PLACEMENT ========================== #}
+<section class="sec sec--plum pap" id="pap" data-anim-scope aria-labelledby="pap-title">
+  <div class="pap__bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="sec-head sec-head--light" data-reveal>
+      <p class="eyebrow eyebrow--light">The Karka promise</p>
+      <h2 class="h2" id="pap-title">Pay after you <span class="grad-text">get hired.</span></h2>
+      <p class="lede">Zero upfront fees. Zero risk. We're so confident in our training that we don't get paid until you do.</p>
+    </div>
+
+    <div class="pap__grid">
+      <div class="compare" data-compare data-reveal>
+        <div class="seg" role="tablist" aria-label="Compare payment models">
+          <button class="seg__btn" role="tab" aria-selected="true" data-mode="karka">With Karka</button>
+          <button class="seg__btn" role="tab" aria-selected="false" data-mode="other">Typical institute</button>
+          <span class="seg__pill" aria-hidden="true"></span>
+        </div>
+        <div class="compare__meter">
+          <span class="compare__label">You pay today</span>
+          <span class="compare__val"><span class="v-karka">₹0</span><span class="v-other">Full fee</span></span>
+          <span class="compare__note"><span class="v-karka">Fees start after your offer letter.</span><span class="v-other">Upfront, job or no job.</span></span>
+        </div>
+        <ol class="flow flow--karka v-karka">
+          <li><span>₹0 to join</span></li><li><span>Learn + intern</span></li><li><span>Get hired</span></li><li class="is-win"><span>Then pay</span></li>
+        </ol>
+        <ol class="flow flow--other v-other">
+          <li><span>Pay full fee</span></li><li><span>Theory classes</span></li><li><span>Paper certificate</span></li><li class="is-lose"><span>Job hunt alone</span></li>
+        </ol>
+        <p class="compare__fine">Minimum-salary threshold and fee terms are explained on your free career call.</p>
+      </div>
+
+      <aside class="inc" data-reveal style="--i:1">
+        <h3>What's included</h3>
+        <ul>
+          {% for item in d.PAP_INCLUDED %}
+          <li style="--i:{{ loop.index0 }}"><span class="inc__ic">{{ icon(item.icon) }}</span>{{ item.label }}</li>
+          {% endfor %}
+        </ul>
+        <div class="inc__foot">
+          <div class="inc__rating"><span class="stars">{% for _ in range(4) %}{{ icon('star') }}{% endfor %}</span><b>{{ site.rating }}</b><small>{{ site.rating_count }} ratings</small></div>
+          <a class="btn btn--light" href="#apply" data-magnetic>Enroll now {{ icon('arrow-right') }}</a>
+        </div>
+      </aside>
+    </div>
+
+    <ol class="steps" data-steps>
+      <svg class="steps__line" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path d="M20 20 C 180 -10, 320 50, 500 20 S 820 -10, 980 20" pathLength="1"/></svg>
+      {% for s in d.PAP_STEPS %}
+      <li class="step" data-reveal style="--i:{{ loop.index0 + 1 }}">
+        <span class="step__no">{{ loop.index }}</span>
+        <span class="step__ic">{{ icon(s.icon) }}</span>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.body }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+{# =============================== TRACKS =============================== #}
+<section class="sec tracks" id="tracks" aria-labelledby="tracks-title">
+  <div class="wrap">
+    <div class="sec-head sec-head--split" data-reveal>
+      <div>
+        <p class="eyebrow">Career tracks</p>
+        <h2 class="h2" id="tracks-title">Choose your <span class="grad-text">career track</span></h2>
+        <p class="lede">Specialised internships and training pathways built to launch your career. Every track is AI-infused.</p>
+      </div>
+      <button class="btn btn--dark" type="button" data-finder-open>{{ icon('compass') }} Not sure? Take the 30-sec quiz</button>
+    </div>
+
+    <div class="tabs" data-tabs>
+      <div class="tabs__list" role="tablist" aria-label="Career tracks">
+        {% for t in d.TRACKS %}
+        <button class="tab tab--{{ t.hue }}" role="tab" id="tab-{{ t.id }}" aria-controls="panel-{{ t.id }}"
+                aria-selected="{{ 'true' if loop.first else 'false' }}" tabindex="{{ 0 if loop.first else -1 }}" data-track="{{ t.id }}">
+          {{ icon(t.icon) }}<span>{{ t.name }}</span>{% if t.popular %}<em class="tab__hot">Hot</em>{% endif %}
+        </button>
+        {% endfor %}
+        <span class="tabs__ink" aria-hidden="true"></span>
+      </div>
+
+      {% for t in d.TRACKS %}
+      <div class="panel{% if loop.first %} is-active{% endif %}" role="tabpanel" id="panel-{{ t.id }}" aria-labelledby="tab-{{ t.id }}" tabindex="0">
+        <p class="panel__tag">{{ t.tagline }}</p>
+        <div class="cards">
+          {% for slug in t.courses %}{% set c = d.COURSES[slug] %}
+          <article class="ccard hue-{{ c.hue }}{% if c.featured %} ccard--feat{% endif %}" style="--i:{{ loop.index0 }}">
+            <div class="ccard__top">
+              <span class="ccard__ic">{{ icon(c.icon) }}</span>
+              {% if c.badge %}<span class="tag tag--dark">{{ c.badge }}</span>{% elif t.popular and loop.first %}<span class="tag tag--dark">Most popular</span>{% endif %}
+            </div>
+            <h3 class="ccard__title">{{ c.name }}</h3>
+            {% if c.featured %}
+              <p class="ccard__meta">{{ icon('clock') }} {{ c.duration }} · {{ c.mode }}</p>
+              <p class="ccard__sum">{{ c.summary.split('. ')[0] }}.</p>
+              <ul class="ccard__stack">{% for s in c.stack[:4] %}<li>{{ s }}</li>{% endfor %}</ul>
+              <div class="ccard__foot">
+                {% if c.enrollments %}<span>{{ icon('users') }} {{ c.enrollments }} enrolled</span>{% endif %}
+                <span class="ccard__rate">{{ icon('star') }} {{ c.rating }}</span>
+              </div>
+              <div class="ccard__cta">
+                <a class="btn btn--sm btn--dark" href="/courses/{{ c.slug }}">View course</a>
+                <a class="btn btn--sm btn--soft" href="/apply?program={{ c.slug }}" data-apply="{{ c.slug }}">Enroll {{ icon('arrow-right') }}</a>
+              </div>
+            {% else %}
+              <p class="ccard__meta">Pay After Placement · Internship included</p>
+              <a class="ccard__link" href="/apply?program={{ c.slug }}" data-apply="{{ c.slug }}">Get details {{ icon('arrow-right') }}</a>
+            {% endif %}
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="combos" data-reveal>
+      <span class="combos__label hand">Why take the long way? Smart combos →</span>
+      <ul>{% for c in d.COMBOS %}<li>{{ c }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+</section>
+
+{# ============================= WHY KARKA ============================== #}
+<section class="sec sec--tint why" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <p class="eyebrow">Why Karka?</p>
+      <h2 class="h2" id="why-title">Six reasons learners pick us <span class="grad-text">over every other institute</span></h2>
+    </div>
+    <div class="why__grid">
+      {% for w in d.WHY %}
+      <article class="wcard spot" data-reveal style="--i:{{ loop.index0 % 3 }}">
+        <span class="wcard__no">0{{ loop.index }}</span>
+        <span class="wcard__ic">{{ icon(w.icon) }}</span>
+        <h3>{{ w.title }}</h3>
+        <p>{{ w.body }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============================== PILLARS =============================== #}
+<section class="sec pillars" aria-labelledby="pillars-title">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <p class="eyebrow">The system</p>
+      <h2 class="h2" id="pillars-title">4 pillars of a <span class="grad-text">job-ready</span> tech career</h2>
+      <p class="lede">We don't just teach code. We build careers, so you leave as a complete professional.</p>
+    </div>
+    <div class="pillars__grid">
+      {% for p in d.PILLARS %}
+      <article class="pcard pcard--{{ p.tone }}{% if p.core %} pcard--core{% endif %}" data-reveal style="--i:{{ loop.index0 }}">
+        {% if p.core %}<span class="pcard__core">Core pillar</span>{% endif %}
+        <span class="pcard__ic">{{ icon(p.icon) }}</span>
+        <h3>{{ p.title }}</h3>
+        <ul>{% for it in p['items'] %}<li>{{ it }}</li>{% endfor %}</ul>
+        <span class="pcard__no" aria-hidden="true">{{ p.no }}</span>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============================ INTERNSHIP ============================== #}
+<section class="sec sec--dark intern" id="internship" data-anim-scope aria-labelledby="intern-title">
+  <div class="wrap intern__in">
+    <div class="intern__copy" data-reveal>
+      <p class="eyebrow eyebrow--light">Internship</p>
+      <h2 class="h2" id="intern-title">Experience <span class="grad-text">before</span> you graduate.</h2>
+      <p class="lede">Stop worrying about "0 experience" on your resume. Every Karka student works on <b>real-time internship projects</b> guided by industry mentors, and builds a portfolio before they even finish.</p>
+      <ul class="perks">
+        {% for p in d.INTERNSHIP_PERKS %}
+        <li data-reveal style="--i:{{ loop.index0 }}"><span class="perks__ic">{{ icon(p.icon) }}</span><span><small>{{ p.k }}</small>{{ p.v }}</span></li>
+        {% endfor %}
+      </ul>
+      <div class="toast" data-reveal style="--i:4">
+        <span class="toast__dot"></span>
+        <p><b>Just in:</b> {{ d.INTERN_ONBOARDED.name }} has been onboarded as an intern at <b>{{ d.INTERN_ONBOARDED.company }}</b> 🎉</p>
+      </div>
+    </div>
+
+    <ol class="sprint" aria-label="How a Karka internship runs">
+      {% for title, body in d.INTERNSHIP_FLOW %}
+      <li data-reveal style="--i:{{ loop.index0 }}"><span class="sprint__no">0{{ loop.index }}</span><div><h3>{{ title }}</h3><p>{{ body }}</p></div></li>
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="marquee marquee--projects" style="--dur:46s" aria-label="Types of projects interns build">
+    <div class="marquee__track">
+      {% for _ in range(2) %}
+      <ul class="projects" {% if loop.index == 2 %}aria-hidden="true"{% endif %}>
+        {% for p in d.PROJECTS %}
+        <li class="win hue-{{ p.hue }}">
+          <div class="win__bar"><i></i><i></i><i></i><span>{{ p.tag }}</span></div>
+          <div class="win__screen win__screen--{{ p.kind }}"><b></b><b></b><b></b><b></b></div>
+          <div class="win__meta"><h3>{{ p.title }}</h3><p>{{ p.stack|join(' · ') }}</p></div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============================ PLACEMENTS ============================== #}
+<section class="sec placed" id="placements" aria-labelledby="placed-title">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <p class="eyebrow">Placements</p>
+      <h2 class="h2" id="placed-title"><span class="script">Got</span> Placed. <span class="grad-text">You're next.</span></h2>
+      <p class="lede">Real learners, real offer letters, straight from our <a href="{{ site.socials.instagram }}" target="_blank" rel="noopener">{{ site.ig_handle }}</a> wall.</p>
+    </div>
+  </div>
+
+  <div class="marquee marquee--placed" style="--dur:60s">
+    <div class="marquee__track">
+      {% for _ in range(2) %}
+      <ul class="gp-list" {% if loop.index == 2 %}aria-hidden="true"{% endif %}>
+        {% for p in d.PLACED %}
+        <li class="gp">
+          <svg class="gp__ribbon" viewBox="0 0 120 60" aria-hidden="true"><path d="M0 50 C30 10, 60 70, 120 8" /></svg>
+          <span class="gp__head"><span class="script">Got</span> Placed</span>
+          <span class="gp__frame"><span>{{ p.name.replace('V. ', '')[:1] }}</span></span>
+          <span class="gp__name">{{ p.name }}</span>
+          <span class="gp__role">{{ p.role }}</span>
+          <span class="gp__co">{{ icon('briefcase') }} {{ p.company }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="reels" data-reels data-reveal>
+      <div class="voices__head">
+        <h3 class="h3">Voices of our learners</h3>
+        <p>Hear directly from our graduates about how Karka changed their careers.</p>
+      </div>
+      {% set v = d.VIDEO_STORIES[0] %}
+      <div class="reels__grid">
+        <div class="reels__list" role="tablist" aria-label="Video testimonials">
+          {% for s in d.VIDEO_STORIES %}
+          <button class="rl" type="button" role="tab" aria-selected="{{ 'true' if loop.first else 'false' }}"
+                  data-src="{{ asset('video/' ~ s.slug ~ '.mp4') }}" data-poster="{{ asset('video/' ~ s.slug ~ '.webp') }}"
+                  data-name="{{ s.name }}" data-role="{{ s.role }}" data-quote="{{ s.quote }}">
+            <img class="rl__thumb" src="{{ asset('video/' ~ s.slug ~ '.webp') }}" width="44" height="44" alt="" loading="lazy" decoding="async">
+            <span class="rl__txt"><b>{{ s.name }}</b><small>{{ s.role }}</small></span>
+            <span class="rl__eq" aria-hidden="true"><i></i><i></i><i></i></span>
+          </button>
+          {% endfor %}
+        </div>
+
+        <div class="reel">
+          <video class="reel__video" src="{{ asset('video/' ~ v.slug ~ '.mp4') }}" poster="{{ asset('video/' ~ v.slug ~ '.webp') }}"
+                 width="540" height="960" preload="none" playsinline controls aria-label="Video testimonial by {{ v.name }}"></video>
+          <span class="reel__rec" aria-hidden="true"><i></i>REC</span>
+          <button class="reel__play" type="button" aria-label="Play video">{{ icon('play') }}</button>
+          <button class="reel__mute" type="button" aria-label="Mute" aria-pressed="false" hidden>
+            <svg class="i i-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            <svg class="i i-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+          </button>
+          <span class="reel__bar" aria-hidden="true"><i></i></span>
+        </div>
+
+        <div class="reel-info" aria-live="polite">
+          <p class="reel-info__now"><span class="reel-info__dot"></span><span data-reel-state>Now showing</span></p>
+          <p class="reel-info__kicker">Karka learner success story</p>
+          <h4 class="reel-info__name" data-reel-name>{{ v.name }}</h4>
+          <p class="reel-info__role"><span data-reel-role>{{ v.role }}</span> {{ icon('arrow-right') }}</p>
+          <blockquote class="reel-info__quote">{{ icon('quote', 'reel-info__q reel-info__q--open') }}<p data-reel-quote>{{ v.quote }}</p>{{ icon('quote', 'reel-info__q reel-info__q--close') }}</blockquote>
+          <button class="reel-info__next" type="button" data-reel-next>Up next: <b data-reel-next-name>{{ d.VIDEO_STORIES[1].name }}</b> {{ icon('arrow-right') }}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="voices" data-reveal>
+      <div class="voices__head">
+        <h3 class="h3">In their words</h3>
+        <p>Tap through like Instagram stories. Hold to pause.</p>
+      </div>
+      <div class="stories" data-stories>
+        <div class="stories__rail" role="tablist" aria-label="Learner stories">
+          {% for s in d.STORIES %}
+          <button class="sring" role="tab" aria-selected="{{ 'true' if loop.first else 'false' }}" data-story="{{ loop.index0 }}">
+            <span class="sring__av av-{{ loop.index0 % 6 }}">{{ s.name[:1] }}</span>
+            <span class="sring__name">{{ s.name.split()[0] }}</span>
+          </button>
+          {% endfor %}
+        </div>
+        <div class="story" aria-live="polite">
+          <div class="story__bars" aria-hidden="true">{% for s in d.STORIES %}<span><i></i></span>{% endfor %}</div>
+          {% for s in d.STORIES %}
+          <article class="story__slide av-{{ loop.index0 % 6 }}{% if loop.first %} is-active{% endif %}" role="tabpanel">
+            <header class="story__who">
+              <span class="story__av">{{ s.name[:1] }}</span>
+              <span><b>{{ s.name }}</b><small>{{ s.role or s.track }}</small></span>
+              {% if s.placed %}<span class="tag tag--win">{{ icon('check') }} Placed</span>{% endif %}
+            </header>
+            <blockquote>{{ icon('quote', 'story__q') }}<p>{{ s.quote }}</p></blockquote>
+            <footer class="story__stars" aria-label="{{ s.rating }} out of 5 stars">
+              {% for i in range(5) %}<span class="{{ 'on' if i < s.rating else '' }}">{{ icon('star') }}</span>{% endfor %}
+            </footer>
+          </article>
+          {% endfor %}
+          <button class="story__nav story__nav--prev" type="button" aria-label="Previous story">{{ icon('chevron-left') }}</button>
+          <button class="story__nav story__nav--next" type="button" aria-label="Next story">{{ icon('chevron-right') }}</button>
+          <button class="story__pause" type="button" aria-label="Pause stories" aria-pressed="false">{{ icon('pause') }}</button>
+        </div>
+        <aside class="stories__side">
+          <div class="rating-card">
+            <span class="rating-card__num">{{ site.rating }}</span>
+            <span class="stars">{% for _ in range(5) %}{{ icon('star') }}{% endfor %}</span>
+            <small>from {{ site.rating_count }}+ learner ratings</small>
+          </div>
+          <a class="ig-card" href="{{ site.socials.instagram }}" target="_blank" rel="noopener">
+            <span class="ig-card__ring">{{ icon('play') }}</span>
+            <span><b>More stories on Instagram</b><small>Placements, events &amp; reels on {{ site.ig_handle }}</small></span>
+            {{ icon('arrow-up-right') }}
+          </a>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================= PLATFORMS ============================== #}
+<section class="sec sec--tint platforms" aria-labelledby="plat-title">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <p class="eyebrow">Beyond the classroom</p>
+      <h2 class="h2" id="plat-title">Explore <span class="grad-text">Karka platforms</span></h2>
+      <p class="lede">Compete with students across the district, or level up with AI-powered learning.</p>
+    </div>
+    <div class="platforms__grid">
+      <article class="infini" data-reveal data-anim-scope>
+        <div class="infini__top">
+          <span class="infini__logo">∞</span>
+          <div><h3>Karka Infini AI</h3><small>A GenZ tech fest · inter-college</small></div>
+          <span class="infini__prize"><b>{{ d.INFINI.prize }}</b><small>prize pool</small></span>
+        </div>
+        <ul class="infini__contests">
+          {% for name, kind, ic in d.INFINI.contests %}<li style="--i:{{ loop.index0 }}">{{ icon(ic) }}<b>{{ name }}</b><small>{{ kind }}</small></li>{% endfor %}
+        </ul>
+        <div class="infini__foot">
+          <p>Round 1 at your campus → District grand finale → <b>Karka Rolling Trophy</b></p>
+          <a class="btn btn--light btn--sm" href="{{ d.INFINI.url }}" target="_blank" rel="noopener">Register free {{ icon('arrow-up-right') }}</a>
+        </div>
+        <span class="infini__sticker">Free<br>entry!</span>
+      </article>
+
+      <article class="spike" data-reveal style="--i:1">
+        <div class="spike__top">
+          <span class="spike__logo">{{ icon('zap') }}</span>
+          <div><h3>Spike AI</h3><small>Learning platform</small></div>
+        </div>
+        <p>The <span class="grad-text">AI-powered</span> learning platform by Karka Academy.</p>
+        <div class="spike__ask"><span>{{ icon('sparkles') }}</span><span class="typing" data-typing="Explain React hooks like I'm 15|Quiz me on SQL joins|Review my Python code">Ask Spike anything you're learning…</span></div>
+        <ul class="spike__grid">
+          {% for t, s, ic in d.SPIKE_FEATURES %}<li>{{ icon(ic) }}<b>{{ t }}</b><small>{{ s }}</small></li>{% endfor %}
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+{# =============================== HIRE ================================= #}
+<section class="hire" id="hire" aria-labelledby="hire-title">
+  <div class="wrap">
+    <div class="hire__card" data-reveal>
+      <div>
+        <p class="eyebrow">For companies</p>
+        <h2 class="h3" id="hire-title">Hiring freshers? {{ d.MISSION.for_companies }}</h2>
+        <p>Get mentored, project-tested Karka graduates in Fullstack, AI, Data and Design, ready from day one.</p>
+      </div>
+      <a class="btn btn--dark" href="mailto:{{ site.email }}?subject={{ 'Hiring from Karka'|urlquote }}">{{ icon('briefcase') }} Hire from Karka</a>
+    </div>
+  </div>
+</section>
+
+{# ================================ FAQ ================================= #}
+<section class="sec faq" id="faq" aria-labelledby="faq-title">
+  <div class="wrap faq__in">
+    <div class="faq__main">
+      <div class="sec-head sec-head--left" data-reveal>
+        <p class="eyebrow">FAQ</p>
+        <h2 class="h2" id="faq-title">Questions? <span class="grad-text">Answered.</span></h2>
+      </div>
+      <div class="acc" data-acc>
+        {% for f in d.FAQS %}
+        <div class="acc__item{% if loop.first %} is-open{% endif %}" data-reveal style="--i:{{ loop.index0 }}">
+          <h3>
+            <button class="acc__btn" type="button" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="faq-{{ loop.index }}" id="faq-btn-{{ loop.index }}">
+              {{ f.q }}<span class="acc__ic" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="acc__panel" id="faq-{{ loop.index }}" role="region" aria-labelledby="faq-btn-{{ loop.index }}"><div><p>{{ f.a }}</p></div></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <aside class="doubts" data-reveal style="--i:2">
+      {% include "_mascot.html" %}
+      <h3>Still have doubts?</h3>
+      <p>Talk to a real mentor, not a call-centre script.</p>
+      <a class="btn btn--glow btn--block" href="https://wa.me/{{ site.whatsapp }}?text={{ 'Hi Karka! I have a question.'|urlquote }}" target="_blank" rel="noopener">{{ icon('whatsapp') }} WhatsApp us</a>
+      <a class="btn btn--soft btn--block" href="tel:{{ site.phone_raw }}">{{ icon('phone') }} {{ site.phone }}</a>
+    </aside>
+  </div>
+</section>
+
+{# =============================== APPLY ================================ #}
+<section class="sec sec--plum apply" id="apply" aria-labelledby="apply-title">
+  <div class="wrap apply__in">
+    <div class="apply__copy" data-reveal>
+      <p class="eyebrow eyebrow--light">Get in touch</p>
+      <h2 class="h2" id="apply-title">Let's talk about <span class="grad-text">your future.</span></h2>
+      <p class="lede">Book a free career call with a mentor. It's the fastest way to clear your doubts and pick the right track.</p>
+      <ul class="apply__points">
+        <li>{{ icon('check-circle') }} ₹0 upfront. Pay after placement.</li>
+        <li>{{ icon('check-circle') }} Real client internship &amp; certificate</li>
+        <li>{{ icon('check-circle') }} On-campus in Nagercoil or online</li>
+      </ul>
+      <div class="apply__contact">
+        <a href="tel:{{ site.phone_raw }}">{{ icon('phone') }} {{ site.phone }}</a>
+        <a href="mailto:{{ site.email }}">{{ icon('mail') }} {{ site.email }}</a>
+        <a href="{{ site.maps }}" target="_blank" rel="noopener">{{ icon('pin') }} {{ site.address }}</a>
+      </div>
+      <p class="hand apply__quote">"Future belongs to those who never stop learning."</p>
+    </div>
+    <div class="apply__form" data-reveal style="--i:1">
+      {% with source = 'home' %}{% include "_form.html" %}{% endwith %}
+    </div>
+  </div>
+</section>
+
+{# ============================ TRACK FINDER ============================ #}
+<dialog class="finder" id="finder" aria-labelledby="finder-title">
+  <div class="finder__in">
+    <button class="finder__x" type="button" data-finder-close aria-label="Close">{{ icon('x') }}</button>
+    <p class="eyebrow">Track finder</p>
+    <h2 class="h3" id="finder-title">Find your track in 3 taps</h2>
+    <div class="finder__bar"><i></i></div>
+    <div class="finder__stage" data-finder-stage></div>
+  </div>
+</dialog>
+<script type="application/json" id="karka-data">{{ client_data|tojson }}</script>
+{% endblock %}

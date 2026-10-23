@@ -1,0 +1,56 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__cta" data-reveal>
+      <div>
+        <h2>Ready to future-proof <span class="grad-text">your career?</span></h2>
+        <p>Join the AI revolution with Karka. Start with ₹0 and real industry mentors.</p>
+      </div>
+      <div class="ftr__cta-btns">
+        <a class="btn btn--light btn--lg" href="/#apply" data-magnetic>Apply for admission {{ icon('arrow-right') }}</a>
+        <a class="btn btn--ghost-light btn--lg" href="/#tracks">Explore tracks</a>
+      </div>
+    </div>
+
+    <div class="ftr__grid">
+      <div class="ftr__brand">
+        <a class="logo logo--light" href="/">{% include "_logo.html" %}</a>
+        <p>{{ site.ig_bio|join(' · ') }}. Empowering the next generation of developers with GenAI-infused education and placement-focused mentorship.</p>
+        <div class="ftr__social">
+          <a href="{{ site.socials.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{{ icon('instagram') }}</a>
+          <a href="{{ site.socials.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">{{ icon('linkedin') }}</a>
+          <a href="{{ site.socials.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{{ icon('facebook') }}</a>
+          <a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener" aria-label="WhatsApp">{{ icon('whatsapp') }}</a>
+        </div>
+      </div>
+      <nav class="ftr__col" aria-label="Programs">
+        <h3>Programs</h3>
+        {% for c in courses.values() if c.featured %}<a href="/courses/{{ c.slug }}">{{ c.short }}</a>{% endfor %}
+      </nav>
+      <nav class="ftr__col" aria-label="Academy">
+        <h3>Academy</h3>
+        <a href="/#pap">Pay After Placement</a>
+        <a href="/#internship">Internships</a>
+        <a href="/#placements">Placements</a>
+        <a href="/#hire">Hire from Karka</a>
+        <a href="https://infini.karka.academy/" target="_blank" rel="noopener">Karka Infini AI</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+      <div class="ftr__col ftr__contact">
+        <h3>Say hi</h3>
+        <a href="tel:{{ site.phone_raw }}">{{ icon('phone') }} {{ site.phone }}</a>
+        <a href="mailto:{{ site.email }}">{{ icon('mail') }} {{ site.email }}</a>
+        <a href="{{ site.maps }}" target="_blank" rel="noopener">{{ icon('pin') }} {{ site.address }}</a>
+        <div class="ftr__map">
+          <iframe src="{{ site.maps_embed }}" title="Map: Karka AI &amp; Tech Academy, Nagercoil" loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="ftr__base">
+      <span>© {{ year }} {{ site.name }}. Since {{ site.founded }}.</span>
+      <span class="ftr__credit">Built by <a href="{{ site.author_url }}" target="_blank" rel="noopener">{{ icon('linkedin-brand') }}{{ site.author }}</a></span>
+      <span class="hand">Learn today, lead tomorrow ✦</span>
+    </div>
+  </div>
+</footer>

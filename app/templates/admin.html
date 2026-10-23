@@ -1,0 +1,43 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Leads · Karka admin</title>
+  <style>
+    body{font:14px/1.5 system-ui,sans-serif;margin:0;background:#faf7fd;color:#1c0f24}
+    header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#2a0a35;color:#fff}
+    header nav{display:flex;gap:8px}
+    header a{color:#fff;background:#8b3dff;padding:8px 14px;border-radius:999px;text-decoration:none;font-weight:600}
+    header a.out{background:rgba(255,255,255,.12)}
+    .wrap{padding:16px;overflow-x:auto}
+    table{border-collapse:collapse;width:100%;min-width:760px;background:#fff;border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid #eee4f4;text-align:left;vertical-align:top}
+    th{background:#f3edf9;font-weight:600;position:sticky;top:0}
+    td.msg{max-width:320px;color:#4a3a56}
+    .empty{padding:40px;text-align:center;color:#7a6a86}
+  </style>
+</head>
+<body>
+  <header><b>Karka leads · {{ leads|length }}</b><nav><a href="/admin/leads.csv">Download CSV</a><a class="out" href="/admin/logout">Log out</a></nav></header>
+  <div class="wrap">
+    {% if leads %}
+    <table>
+      <thead><tr><th>#</th><th>When (UTC)</th><th>Name</th><th>Phone</th><th>Email</th><th>Program</th><th>I am a</th><th>Message</th><th>Source</th></tr></thead>
+      <tbody>
+        {% for l in leads %}
+        <tr>
+          <td>{{ l.id }}</td><td>{{ l.created_at }}</td><td>{{ l.name }}</td>
+          <td><a href="https://wa.me/{{ l.phone|replace('+', '') }}" target="_blank" rel="noopener">{{ l.phone }}</a></td>
+          <td>{{ l.email or '' }}</td><td>{{ l.program }}</td><td>{{ l.audience or '' }}</td>
+          <td class="msg">{{ l.message or '' }}</td><td>{{ l.source or '' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}<p class="empty">No leads yet.</p>{% endif %}
+  </div>
+</body>
+</html>

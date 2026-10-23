@@ -1,0 +1,124 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+{% extends "base.html" %}
+{% block title %}{{ course.name }} Course in Nagercoil · Pay After Placement · Karka{% endblock %}
+{% block description %}{{ course.summary }} {{ course.duration }}, {{ course.mode }}. ₹0 upfront with Pay After Placement.{% endblock %}
+
+{% block head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": {{ course.name|tojson }},
+  "description": {{ course.summary|tojson }},
+  "provider": {"@type": "EducationalOrganization", "name": {{ site.name|tojson }}, "sameAs": {{ site.url|tojson }}},
+  "timeRequired": {{ course.duration|tojson }},
+  "aggregateRating": {"@type": "AggregateRating", "ratingValue": "{{ course.rating }}", "ratingCount": "{{ site.rating_count }}"},
+  "hasCourseInstance": {"@type": "CourseInstance", "courseMode": ["Onsite", "Online"], "location": "Nagercoil, Tamil Nadu"}
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="hero hero--course hue-{{ course.hue }}" data-anim-scope>
+  <div class="hero__bg" aria-hidden="true"><div class="hero__grid"></div><div class="glow glow--a"></div><div class="glow glow--b"></div></div>
+  <div class="wrap chero">
+    <nav class="crumbs anim-in" style="--d:.05s" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/#tracks">Tracks</a> / <span>{{ course.short }}</span></nav>
+    <div class="chero__grid">
+      <div>
+        <h1 class="chero__title anim-in" style="--d:.12s">{{ course.name }}</h1>
+        <p class="hero__sub anim-in" style="--d:.24s">{{ course.summary }}</p>
+        <ul class="chero__facts anim-in" style="--d:.34s">
+          <li>{{ icon('clock') }} {{ course.duration }}</li>
+          <li>{{ icon('monitor') }} {{ course.mode }}</li>
+          {% if course.lessons %}<li>{{ icon('book') }} {{ course.lessons }} lessons</li>{% endif %}
+          {% if course.enrollments %}<li>{{ icon('users') }} {{ course.enrollments }} enrolled</li>{% endif %}
+          <li>{{ icon('star') }} {{ course.rating }} rating</li>
+        </ul>
+        <div class="hero__ctas anim-in" style="--d:.44s">
+          <a class="btn btn--glow btn--lg" href="#apply" data-magnetic>Apply free · ₹0 upfront {{ icon('arrow-right') }}</a>
+          <a class="btn btn--ghost-light btn--lg" href="https://wa.me/{{ site.whatsapp }}?text={{ ('Hi Karka! Tell me about ' ~ course.name)|urlquote }}" target="_blank" rel="noopener">{{ icon('whatsapp') }} Ask on WhatsApp</a>
+        </div>
+      </div>
+      <div class="chero__card anim-in" style="--d:.3s">
+        <span class="chero__ic">{{ icon(course.icon) }}</span>
+        <p class="chero__label">Pay After Placement</p>
+        <p class="chero__big">₹0 <small>today</small></p>
+        <p class="chero__note">Fees start only after you land a tech job with a guaranteed minimum salary.</p>
+        <ul>
+          <li>{{ icon('check') }} Real client internship</li>
+          <li>{{ icon('check') }} 1:1 mentorship</li>
+          <li>{{ icon('check') }} Mock interviews &amp; referrals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap course__grid">
+    <div>
+      <div class="sec-head sec-head--left" data-reveal>
+        <p class="eyebrow">Curriculum</p>
+        <h2 class="h2">What you'll <span class="grad-text">learn &amp; build</span></h2>
+      </div>
+      <ol class="modules">
+        {% for title, body in course.modules %}
+        <li data-reveal style="--i:{{ loop.index0 % 3 }}">
+          <span class="modules__no">{{ '%02d' % loop.index }}</span>
+          <div><h3>{{ title }}</h3><p>{{ body }}</p></div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+    <aside class="course__side">
+      <div class="side-card" data-reveal>
+        <h3>Tools you'll master</h3>
+        <ul class="tool-chips">{% for s in course.stack %}<li style="--i:{{ loop.index0 }}">{{ s }}</li>{% endfor %}</ul>
+      </div>
+      <div class="side-card" data-reveal style="--i:1">
+        <h3>Roles you can land</h3>
+        <ul class="roles">{% for r in course.roles %}<li>{{ icon('briefcase') }} {{ r }}</li>{% endfor %}</ul>
+      </div>
+      <div class="side-card side-card--plum" data-reveal style="--i:2">
+        <h3>Plus the 4 pillars</h3>
+        <p>Business English, AI skills, interview prep and an ATS-friendly profile are built into every track.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="sec sec--plum apply" id="apply">
+  <div class="wrap apply__in">
+    <div class="apply__copy" data-reveal>
+      <p class="eyebrow eyebrow--light">Seats are limited</p>
+      <h2 class="h2">Start {{ course.short }} <span class="grad-text">for ₹0.</span></h2>
+      <p class="lede">Book a free career call. A mentor will walk you through the curriculum, batches and Pay After Placement terms.</p>
+      <ul class="apply__points">
+        <li>{{ icon('check-circle') }} {{ course.duration }}, {{ course.mode|lower }}</li>
+        <li>{{ icon('check-circle') }} Internship certificate + live portfolio</li>
+        <li>{{ icon('check-circle') }} Placement support until you're hired</li>
+      </ul>
+    </div>
+    <div class="apply__form" data-reveal style="--i:1">
+      {% with values = {'program': course.name}, source = 'course:' ~ course.slug %}{% include "_form.html" %}{% endwith %}
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head" data-reveal><p class="eyebrow">Keep exploring</p><h2 class="h2">Other <span class="grad-text">popular tracks</span></h2></div>
+    <div class="cards cards--related">
+      {% for c in related %}
+      <article class="ccard ccard--feat hue-{{ c.hue }}" data-reveal style="--i:{{ loop.index0 }}">
+        <div class="ccard__top"><span class="ccard__ic">{{ icon(c.icon) }}</span></div>
+        <h3 class="ccard__title">{{ c.name }}</h3>
+        <p class="ccard__meta">{{ icon('clock') }} {{ c.duration }} · {{ c.mode }}</p>
+        <p class="ccard__sum">{{ c.summary.split('. ')[0] }}.</p>
+        <div class="ccard__cta"><a class="btn btn--sm btn--dark" href="/courses/{{ c.slug }}">View course {{ icon('arrow-right') }}</a></div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

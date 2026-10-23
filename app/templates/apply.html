@@ -1,0 +1,28 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+{% extends "base.html" %}
+{% block title %}Apply free · ₹0 upfront · Karka AI & Tech Academy{% endblock %}
+{% block description %}Book a free career call with a Karka mentor. Pay After Placement: ₹0 upfront, pay only after you get hired.{% endblock %}
+{% block body_class %}page-apply{% endblock %}
+{% block sticky %}{% endblock %}
+
+{% block content %}
+<section class="sec sec--plum apply apply--page" id="apply">
+  <div class="hero__bg" aria-hidden="true"><div class="hero__grid"></div><div class="glow glow--a"></div><div class="glow glow--b"></div></div>
+  <div class="wrap apply__in">
+    <div class="apply__copy">
+      <p class="eyebrow eyebrow--light anim-in" style="--d:.05s">Apply free</p>
+      <h1 class="h2 anim-in" style="--d:.12s">Your tech career starts at <span class="grad-text">₹0.</span></h1>
+      <p class="lede anim-in" style="--d:.2s">Tell us a little about you. A mentor will call or WhatsApp you to help pick the right track. No pressure, no spam.</p>
+      <ul class="apply__points anim-in" style="--d:.28s">
+        <li>{{ icon('check-circle') }} Pay After Placement</li>
+        <li>{{ icon('check-circle') }} Real client internships</li>
+        <li>{{ icon('check-circle') }} On-site mentors in Nagercoil</li>
+      </ul>
+      <div class="apply__mascot anim-in" style="--d:.4s">{% include "_mascot.html" %}</div>
+    </div>
+    <div class="apply__form anim-in" style="--d:.2s">
+      {% with source = 'apply-page' %}{% include "_form.html" %}{% endwith %}
+    </div>
+  </div>
+</section>
+{% endblock %}

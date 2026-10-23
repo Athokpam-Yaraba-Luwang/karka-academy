@@ -1,0 +1,21 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+{% extends "base.html" %}
+{% block title %}You're in! · Karka AI & Tech Academy{% endblock %}
+{% block body_class %}page-thanks{% endblock %}
+{% block sticky %}{% endblock %}
+{% block head %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<section class="sec sec--plum thanks">
+  <div class="confetti" aria-hidden="true">{% for i in range(18) %}<i style="--i:{{ i }}"></i>{% endfor %}</div>
+  <div class="wrap thanks__in">
+    <div class="thanks__bot anim-in" style="--d:.05s">{% include "_mascot.html" %}</div>
+    <h1 class="h2 anim-in" style="--d:.15s">You're in{% if name %}, {{ name }}{% endif %}! <span class="grad-text">🎉</span></h1>
+    <p class="lede anim-in" style="--d:.25s">A Karka mentor will reach out on WhatsApp or phone soon. Meanwhile, here's what you can do:</p>
+    <div class="hero__ctas anim-in" style="--d:.35s">
+      <a class="btn btn--glow btn--lg" href="{{ site.socials.instagram }}" target="_blank" rel="noopener">{{ icon('instagram') }} Follow {{ site.ig_handle }}</a>
+      <a class="btn btn--ghost-light btn--lg" href="/#tracks">Explore tracks</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

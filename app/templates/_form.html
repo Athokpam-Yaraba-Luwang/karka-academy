@@ -1,0 +1,68 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+{# Lead form. Works without JS (POST /apply); main.js upgrades it to fetch + inline validation. #}
+{% set values = values|default({}) %}
+{% set errors = errors|default({}) %}
+<form class="lead" action="/apply" method="post" data-lead-form novalidate>
+  <div class="lead__body">
+    {% if errors.form %}<p class="lead__alert" role="alert">{{ errors.form }}</p>{% endif %}
+    <div class="field-row">
+      <label class="field{% if errors.name %} is-bad{% endif %}">
+        <span class="field__label">Your name</span>
+        <input name="name" autocomplete="name" required maxlength="80" placeholder="e.g. Priya S" value="{{ values.name|default('') }}">
+        <small class="field__err" data-err="name">{{ errors.name|default('') }}</small>
+      </label>
+      <label class="field{% if errors.phone %} is-bad{% endif %}">
+        <span class="field__label">WhatsApp number</span>
+        <input name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="16" placeholder="98765 43210" value="{{ values.phone|default('') }}">
+        <small class="field__err" data-err="phone">{{ errors.phone|default('') }}</small>
+      </label>
+    </div>
+    <div class="field-row">
+      <label class="field{% if errors.email %} is-bad{% endif %}">
+        <span class="field__label">Email <em>(optional)</em></span>
+        <input name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="you@email.com" value="{{ values.email|default('') }}">
+        <small class="field__err" data-err="email">{{ errors.email|default('') }}</small>
+      </label>
+      <label class="field field--select{% if errors.program %} is-bad{% endif %}">
+        <span class="field__label">Preferred program</span>
+        <select name="program" required>
+          <option value="" disabled {% if not values.program %}selected{% endif %}>Choose a program</option>
+          {% for p in program_choices %}
+          <option value="{{ p }}" {% if values.program == p %}selected{% endif %}>{{ p }}</option>
+          {% endfor %}
+        </select>
+        <small class="field__err" data-err="program">{{ errors.program|default('') }}</small>
+      </label>
+    </div>
+    <fieldset class="field field--chips{% if errors.audience %} is-bad{% endif %}">
+      <legend class="field__label">I am a…</legend>
+      <div class="chips">
+        {% for a in audiences %}
+        <label class="chip-opt"><input type="radio" name="audience" value="{{ a }}" {% if values.audience == a %}checked{% endif %}><span>{{ a }}</span></label>
+        {% endfor %}
+      </div>
+      <small class="field__err" data-err="audience">{{ errors.audience|default('') }}</small>
+    </fieldset>
+    <label class="field">
+      <span class="field__label">Anything you want to ask? <em>(optional)</em></span>
+      <textarea name="message" rows="3" maxlength="1000" placeholder="I'm from a non-CSE background. Can I still join?">{{ values.message|default('') }}</textarea>
+    </label>
+    <label class="hp" aria-hidden="true">Company <input name="company" tabindex="-1" autocomplete="off"></label>
+    <input type="hidden" name="source" value="{{ source|default('site') }}">
+    <button class="btn btn--glow btn--block btn--lg lead__submit" type="submit" data-magnetic>
+      <span class="lead__label">Book my free career call</span>
+      <span class="lead__spin" aria-hidden="true"></span>
+      {{ icon('arrow-right') }}
+    </button>
+    <p class="lead__fine">{{ icon('shield') }} No spam. A mentor will call or WhatsApp you, and that's it.</p>
+  </div>
+  <div class="lead__done" hidden tabindex="-1">
+    <div class="tick" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg></div>
+    <h3>You're in, <span data-first-name>friend</span>! 🎉</h3>
+    <p>A Karka mentor will reach out on WhatsApp soon. Meanwhile, see what our learners are up to on Instagram.</p>
+    <div class="lead__done-cta">
+      <a class="btn btn--ghost" href="{{ site.socials.instagram }}" target="_blank" rel="noopener">{{ icon('instagram') }} Follow {{ site.ig_handle }}</a>
+      <a class="btn btn--glow" href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener">{{ icon('whatsapp') }} Chat now</a>
+    </div>
+  </div>
+</form>

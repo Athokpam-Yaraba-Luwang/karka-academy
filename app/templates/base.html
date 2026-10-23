@@ -1,0 +1,130 @@
+{#- Karka AI & Tech Academy website · built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -#}
+<!doctype html>
+<!-- Karka AI & Tech Academy · designed & built by Athokpam Yaraba Luwang · https://www.linkedin.com/in/yaraba-athokpam-856538343/ -->
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block title %}{{ site.name }} · Pay After Placement · Nagercoil{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
+  <meta name="author" content="{{ site.author }}">
+  <link rel="canonical" href="{{ origin }}{{ page_path|default('/') }}">
+  <meta name="theme-color" content="#1f0628">
+  <meta name="color-scheme" content="light">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.name }}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:url" content="{{ origin }}{{ page_path|default('/') }}">
+  <meta property="og:image" content="{{ origin }}/static/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="{{ asset('img/icon-32.png') }}" sizes="32x32" type="image/png">
+  <link rel="icon" href="{{ asset('img/icon-48.png') }}" sizes="48x48" type="image/png">
+  <link rel="apple-touch-icon" href="{{ asset('img/icon-180.png') }}">
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  {# Lite mode: older / low-memory phones and data-saver users get a calmer, cheaper page. #}
+  <script>
+    (function (d) {
+      var h = d.documentElement, n = navigator, c = n.connection || {}, q = location.search, lite = false;
+      h.classList.add('js');
+      try {
+        lite = matchMedia('(prefers-reduced-motion: reduce)').matches || !!c.saveData ||
+          /(^|-)2g$/.test(c.effectiveType || '') ||
+          (n.deviceMemory && n.deviceMemory <= 2) ||
+          (n.hardwareConcurrency && n.hardwareConcurrency <= 2) ||
+          (n.deviceMemory && n.deviceMemory <= 4 && n.hardwareConcurrency <= 4);
+      } catch (e) {}
+      if (/[?&]lite=1/.test(q)) lite = true;
+      if (/[?&]lite=0/.test(q)) lite = false;
+      if (lite) h.classList.add('lite');
+    })(document);
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400..800&family=Inter:wght@400..700&family=Caveat:wght@600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400..800&family=Inter:wght@400..700&family=Caveat:wght@600;700&display=swap"></noscript>
+  <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": {{ site.name|tojson }},
+    "url": {{ site.url|tojson }},
+    "logo": {{ (origin ~ '/static/img/icon-512.png')|tojson }},
+    "foundingDate": "{{ site.founded }}",
+    "telephone": {{ site.phone|tojson }},
+    "email": {{ site.email|tojson }},
+    "address": {"@type": "PostalAddress", "addressLocality": "Nagercoil", "addressRegion": "Tamil Nadu", "addressCountry": "IN"},
+    "sameAs": {{ site.socials.values()|list|tojson }},
+    "aggregateRating": {"@type": "AggregateRating", "ratingValue": "{{ site.rating }}", "ratingCount": "{{ site.rating_count }}"}
+  }
+  </script>
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"></div>
+
+  {% block header %}
+  <header class="hdr" id="hdr">
+    <div class="wrap hdr__in">
+      <a class="logo" href="/" aria-label="{{ site.name }}, home">
+        {% include "_logo.html" %}
+      </a>
+      <nav class="hdr__nav" aria-label="Primary">
+        {% for item in nav %}<a href="{{ item.href }}">{{ item.label }}</a>{% endfor %}
+      </nav>
+      <div class="hdr__cta">
+        <a class="btn btn--sm btn--glow" href="/#apply" data-magnetic>Apply free {{ icon('arrow-right') }}</a>
+        <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mnav" id="mnav" aria-label="Menu" hidden>
+    <nav class="mnav__links">
+      {% for item in nav %}<a href="{{ item.href }}" style="--i:{{ loop.index }}">{{ item.label }}</a>{% endfor %}
+      <a href="/#apply" style="--i:{{ nav|length + 1 }}">Talk to us</a>
+    </nav>
+    <div class="mnav__foot" style="--i:{{ nav|length + 2 }}">
+      <a class="btn btn--glow btn--block" href="/#apply">Apply free · ₹0 upfront {{ icon('arrow-right') }}</a>
+      <div class="mnav__social">
+        <a href="{{ site.socials.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{{ icon('instagram') }}</a>
+        <a href="{{ site.socials.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn">{{ icon('linkedin') }}</a>
+        <a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener" aria-label="WhatsApp">{{ icon('whatsapp') }}</a>
+        <a href="tel:{{ site.phone_raw }}" aria-label="Call">{{ icon('phone') }}</a>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block footer %}
+  {% include "_footer.html" %}
+  {% endblock %}
+
+  {% block sticky %}
+  <div class="dock" id="dock" aria-hidden="true">
+    <a class="btn btn--glow dock__main" href="/#apply" tabindex="-1">Apply free <span class="dock__tag">₹0 upfront</span></a>
+    <a class="dock__wa" href="https://wa.me/{{ site.whatsapp }}?text={{ 'Hi Karka! I want to know more about your courses.'|urlquote }}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" tabindex="-1">{{ icon('whatsapp') }}</a>
+  </div>
+  {% endblock %}
+
+  {% block scripts %}
+  <script src="{{ asset('js/main.js') }}" defer></script>
+  {% endblock %}
+</body>
+</html>
